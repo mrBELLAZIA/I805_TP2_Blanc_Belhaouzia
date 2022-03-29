@@ -1,23 +1,49 @@
 package fr.usmb.m1isc.compilation.tp;
 
+import static java.util.Objects.isNull;
+
 public class Arbre {
 
-    private NodeType type;
+    private String op;
     private Arbre fg,fd;
-    private int nb;
+    private int racine;
 
-    public Arbre(NodeType type,Arbre fg,Arbre fd) {
-        this.type = type;
+    public Arbre(String op,Arbre fg,Arbre fd) {
+        this.op = op;
         this.fg = fg;
         this.fd = fd;
     }
-    public Arbre(NodeType type,int nb) {
-        this.type = type;
-        this.nb = nb;
+    public Arbre(String op,int racine) {
+        this.op = op;
+        this.racine = racine;
 
     }
-    public Arbre(NodeType type) {
-        this.type = type;
+    public Arbre(String op) {
+        this.op = op;
+    }
+    public Arbre() {}
+
+    public int getRacine() {
+        return this.racine;
     }
 
+    public String afficheFeuille() {
+        if (this.op.equals("int")) {
+            return Integer.toString(this.racine);
+        }
+        else {
+            return this.op;
+        }
+    }
+
+    public void afficheArbre() {
+        System.out.print("(" + this.afficheFeuille());
+        if (!isNull(this.fd)){
+            this.fd.afficheArbre();
+        }
+        if (!isNull(this.fg)){
+            this.fg.afficheArbre();
+        }
+        System.out.print(")");
+    }
 }

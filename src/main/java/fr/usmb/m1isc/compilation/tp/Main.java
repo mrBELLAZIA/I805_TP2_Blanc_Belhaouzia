@@ -15,6 +15,7 @@ public class Main {
 		@SuppressWarnings("deprecation")
 		parser p = new parser(yy);
 		Symbol result = p.parse();
-		System.out.println("Resultat = " + result.value);
+		Arbre a = (Arbre)result.value;
+		a.afficheArbre();
     }
 }
