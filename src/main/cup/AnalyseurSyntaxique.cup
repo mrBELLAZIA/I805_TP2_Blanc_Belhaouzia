@@ -61,7 +61,7 @@ sequence ::=
 // une expession est soit une affectation ,une              
 expression ::=
        expr:e {: RESULT = e; :}
-       | LET IDENT:nom EGAL expr:e {: RESULT = new Arbre(NodeType.LET, "=", new Arbre(NodeType.IDENT, nom.toString()), e); :}
+       | LET IDENT:nom EGAL expr:e {: RESULT = new Arbre(NodeType.OPERATEUR, "let", new Arbre(NodeType.IDENT, nom.toString()), e); :}
        | WHILE expr:cond DO expression:e {: RESULT = new Arbre(NodeType.WHILE, "while", cond, e); :}
        | IF expr:cond THEN expression:a1 ELSE expression:a2 {: RESULT = new Arbre(NodeType.IF, "if", cond, new Arbre(NodeType.THEN, "then", a1, a2)); :}
        | error; // reprise d'erreurs
