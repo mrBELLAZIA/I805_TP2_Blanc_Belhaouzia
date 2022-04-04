@@ -4,46 +4,42 @@ import static java.util.Objects.isNull;
 
 public class Arbre {
 
-    private String op;
+    private NodeType type;
+    private String racine;
     private Arbre fg,fd;
-    private int racine;
 
-    public Arbre(String op,Arbre fg,Arbre fd) {
-        this.op = op;
+    public Arbre(NodeType type, String racine, Arbre fg, Arbre fd) {
+        this.type = type;
+        this.racine = racine;
         this.fg = fg;
         this.fd = fd;
     }
-    public Arbre(String op,int racine) {
-        this.op = op;
+    public Arbre(NodeType type, String racine) {
+        this.type = type;
         this.racine = racine;
-
-    }
-    public Arbre(String op) {
-        this.op = op;
     }
     public Arbre() {}
 
-    public int getRacine() {
+    public String getRacine() {
         return this.racine;
     }
 
-    public String afficheFeuille() {
-        if (this.op.equals("int")) {
-            return Integer.toString(this.racine);
-        }
-        else {
-            return this.op;
-        }
-    }
-
-    public void afficheArbre() {
-        System.out.print("(" + this.afficheFeuille());
-        if (!isNull(this.fd)){
-            this.fd.afficheArbre();
+    public String toString() {
+        String resultat = "";
+        if (this.type == NodeType.OPERATEUR) {
+            resultat += "(" + this.racine;
+        } else {
+            resultat += " " + this.racine;
         }
         if (!isNull(this.fg)){
-            this.fg.afficheArbre();
+            resultat += this.fg.toString();
         }
-        System.out.print(")");
+        if (!isNull(this.fd)){
+            resultat += this.fd.toString();
+        }
+        if (this.type == NodeType.OPERATEUR) {
+            resultat += ")";
+        }
+        return resultat;
     }
 }

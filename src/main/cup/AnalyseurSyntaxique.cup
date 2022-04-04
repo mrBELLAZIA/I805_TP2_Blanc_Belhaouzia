@@ -53,41 +53,41 @@ precedence left MOINS_UNAIRE;
 
 /* grammaire */
 // un pg est une sequence d'insctions terminee par point
-program ::= sequence:s POINT;
+program ::= sequence:s {: RESULT = s; :} POINT;
 // une sequence est une suite d'instructions separes par des point virgules 
 sequence ::=
-        expression:e1 SEMI sequence:e2
-        | expression:e;
+        expression:e1 SEMI sequence:e2 {: RESULT = new Arbre(NodeType.OPERATEUR, ";", e1, e2); :}
+        | expression:e {: RESULT = e; :};
 // une expession est soit une affectation ,une              
 expression ::=
-       expr:e {: e.afficheArbre(); :}
-       | LET IDENT:nom EGAL expr:e {: RESULT = new Arbre("let", new Arbre(nom), e); :}
-       | WHILE expr:cond DO expression:e
-       | IF expr:cond THEN expression:a1 ELSE expression:a2
+       expr:e {: RESULT = e; :}
+       | LET IDENT:nom EGAL expr:e {: RESULT = new Arbre(NodeType.LET, "=", new Arbre(NodeType.IDENT, nom.toString()), e); :}
+       | WHILE expr:cond DO expression:e {: RESULT = new Arbre(NodeType.WHILE, "while", cond, e); :}
+       | IF expr:cond THEN expression:a1 ELSE expression:a2 {: RESULT = new Arbre(NodeType.IF, "if", cond, new Arbre(NodeType.THEN, "then", a1, a2)); :}
        | error; // reprise d'erreurs
 // expression arithmetiques et logiques
 expr ::=
-        NOT:op expr:e           {: RESULT = new Arbre("!", e, null); :}
-       | expr:e1 AND expr:e2    {: RESULT = new Arbre("&&", e1, e2); :}
-       | expr:e1 OR expr:e2     {: RESULT = new Arbre("||", e1, e2); :}
-       | expr:e1 EGAL expr:e2   {: RESULT = new Arbre("==", e1, e2); :}
-       | expr:e1 GT expr:e2     {: RESULT = new Arbre("<", e1, e2); :}
-       | expr:e1 GTE expr:e2    {: RESULT = new Arbre("<=", e1, e2); :}
-       | expr:e1 PLUS expr:e2   {: RESULT = new Arbre("+", e1, e2); :}
-       | expr:e1 MOINS expr:e2  {: RESULT = new Arbre("-", e1, e2); :}
-       | expr:e1 MUL expr:e2    {: RESULT = new Arbre("*", e1, e2); :}
+        NOT:op expr:e           {: RESULT = new Arbre(NodeType.NOT, "!", e, null); :}
+       | expr:e1 AND expr:e2    {: RESULT = new Arbre(NodeType.AND, "&&", e1, e2); :}
+       | expr:e1 OR expr:e2     {: RESULT = new Arbre(NodeType.OR, "||", e1, e2); :}
+       | expr:e1 EGAL expr:e2   {: RESULT = new Arbre(NodeType.EGAL, "==", e1, e2); :}
+       | expr:e1 GT expr:e2     {: RESULT = new Arbre(NodeType.GT, ">", e1, e2); :}
+       | expr:e1 GTE expr:e2    {: RESULT = new Arbre(NodeType.GTE, ">=", e1, e2); :}
+       | expr:e1 PLUS expr:e2   {: RESULT = new Arbre(NodeType.OPERATEUR, "+", e1, e2); :}
+       | expr:e1 MOINS expr:e2  {: RESULT = new Arbre(NodeType.OPERATEUR, "-", e1, e2); :}
+       | expr:e1 MUL expr:e2    {: RESULT = new Arbre(NodeType.OPERATEUR, "*", e1, e2); :}
        | expr:e1 DIV expr:e2    {: if (erreur) { RESULT = new Arbre(); }
-                                   else if (e2.getRacine() == 0) { RESULT = new Arbre(); erreur = true; System.err.println("Ligne " + (e2left + 1) + ", Colonne " + (e2right + 1) + " : Erreur division par zero"); }
-                                   else { RESULT = new Arbre("/", e1, e2); }
+                                   else if (e2.getRacine().equals("0")) { RESULT = new Arbre(); erreur = true; System.err.println("Ligne " + (e2left + 1) + ", Colonne " + (e2right + 1) + " : Erreur division par zero"); }
+                                   else { RESULT = new Arbre(NodeType.OPERATEUR, "/", e1, e2); }
                                 :}
        | expr:e1 MOD expr:e2    {: if (erreur) { RESULT = new Arbre(); }
-                                   else if (e2.getRacine() == 0) { RESULT = new Arbre(); erreur = true; System.err.println("Ligne " + (e2left + 1) + ", Colonne " + (e2right + 1) + " : Erreur division par zero"); }
-                                   else { RESULT = new Arbre("%", e1, e2); }
+                                   else if (e2.getRacine().equals("0")) { RESULT = new Arbre(); erreur = true; System.err.println("Ligne " + (e2left + 1) + ", Colonne " + (e2right + 1) + " : Erreur division par zero"); }
+                                   else { RESULT = new Arbre(NodeType.MOD, "%", e1, e2); }
                                 :}
-       | MOINS expr:e           {: RESULT = new Arbre("-", e, null); :} %prec MOINS_UNAIRE
-       | OUTPUT expr:e
-       | INPUT
-       | NIL                    {: RESULT = new Arbre(); :}
-       | ENTIER:n               {: RESULT = new Arbre("int", n); :}
-       | IDENT:id               {: RESULT = new Arbre(id); :}
+       | MOINS expr:e           {: RESULT = new Arbre(NodeType.MOINS_UNAIRE, "-", e, null); :} %prec MOINS_UNAIRE
+       | OUTPUT expr:e          {: RESULT = new Arbre(NodeType.OUTPUT, e.toString()); :}
+       | INPUT                  {: RESULT = new Arbre(NodeType.INPUT, "input"); :}
+       | NIL                    {: RESULT = new Arbre(NodeType.NIL, "nil"); :}
+       | ENTIER:n               {: RESULT = new Arbre(NodeType.ENTIER, n.toString()); :}
+       | IDENT:id               {: RESULT = new Arbre(NodeType.IDENT, id.toString()); :}
        | PAR_G sequence:e PAR_D {: RESULT = e; :};
