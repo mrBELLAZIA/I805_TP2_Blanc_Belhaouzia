@@ -15,7 +15,6 @@ public enum NodeType {
     INPUT,
     NIL,
     IDENT,
-    LET,
     WHILE,
     IF,
     THEN
