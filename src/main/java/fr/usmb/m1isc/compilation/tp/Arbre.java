@@ -68,23 +68,22 @@ public class Arbre {
         }
         if (this.type == ENTIER) {
             resultat += "\tmov eax, " + this.racine + "\n";
-            resultat += "\tpush eax\n";
         } else if (this.type == OPERATEUR) {
-            resultat += "\tpop eax\n";
-            resultat += "\tpop ebx\n";
             if (this.racine.equals("+")) {
+                resultat += "\tpop ebx\n";
                 resultat += "\tadd eax, ebx\n";
             } else if (this.racine.equals("-")) {
+                resultat += "\tpop ebx\n";
                 resultat += "\tsub ebx, eax\n";
             } else if (this.racine.equals("*")) {
+                resultat += "\tpop ebx\n";
                 resultat += "\tmul eax, ebx\n";
             } else if (this.racine.equals("/")) {
+                resultat += "\tpop ebx\n";
                 resultat += "\tdiv ebx, eax\n";
             }
         } else if (this.type == LET) {
-            resultat += "\tmov eax,"+ "jsp encore"+"\n";
             resultat += "\tmov "+this.fg.racine+",eax \n";
-            resultat += this.fd.genCode();
         }
         return resultat;
     }
@@ -96,7 +95,7 @@ public class Arbre {
         for(int i = 0; i < listData.size(); i++){
             resultat += "\t " + listData.get(i) + " DD\n";
         }
-        resultat += "DATA ENDS";
+        resultat += "DATA ENDS\n";
         resultat += "CODE SEGMENT\n";
         resultat += this.genCode();
         resultat += "CODE ENDS";
