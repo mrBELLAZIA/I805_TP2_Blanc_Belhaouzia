@@ -132,12 +132,12 @@ public class Arbre {
             resultat += this.fd.genCode();
             resultat += "\tpop ebx\n";
             resultat += "\tsub eax, ebx\n";
-            resultat += "\tjle faux_gt_1\n";
+            resultat += "\tjle faux_lt_1\n";
             resultat += "\tmov eax, 1\n";
-            resultat += "\tjmp sortie_gt_1\n";
-            resultat += "faux_gt_1 :\n";
+            resultat += "\tjmp sortie_lt_1\n";
+            resultat += "faux_lt_1 :\n";
             resultat += "\tmov eax, 0\n";
-            resultat += "sortie_gt_1 :\n";
+            resultat += "sortie_lt_1 :\n";
             return resultat;
         }
 
@@ -148,12 +148,12 @@ public class Arbre {
             resultat += this.fd.genCode();
             resultat += "\tpop ebx\n";
             resultat += "\tsub eax, ebx\n";
-            resultat += "\tjl faux_gt_1\n";
+            resultat += "\tjl faux_lte_1\n";
             resultat += "\tmov eax, 1\n";
-            resultat += "\tjmp sortie_gt_1\n";
-            resultat += "faux_gt_1 :\n";
+            resultat += "\tjmp sortie_lte_1\n";
+            resultat += "faux_lte_1 :\n";
             resultat += "\tmov eax, 0\n";
-            resultat += "sortie_gt_1 :\n";
+            resultat += "sortie_lte_1 :\n";
             return resultat;
         }
 
@@ -180,12 +180,28 @@ public class Arbre {
             resultat += this.fd.genCode();
             resultat += "\tpop ebx\n";
             resultat += "\tsub eax, ebx\n";
-            resultat += "\tjg faux_gt_1\n";
+            resultat += "\tjg faux_gte_1\n";
             resultat += "\tmov eax, 1\n";
-            resultat += "\tjmp sortie_gt_1\n";
-            resultat += "faux_gt_1 :\n";
+            resultat += "\tjmp sortie_gte_1\n";
+            resultat += "faux_gte_1 :\n";
             resultat += "\tmov eax, 0\n";
-            resultat += "sortie_gt_1 :\n";
+            resultat += "sortie_gte_1 :\n";
+            return resultat;
+        }
+
+        // gère les égal
+        else if (this.type == EGAL) {
+            resultat += this.fg.genCode();
+            resultat += "\tpush eax\n";
+            resultat += this.fd.genCode();
+            resultat += "\tpop ebx\n";
+            resultat += "\tsub eax, ebx\n";
+            resultat += "\tjnz faux_egal_1\n";
+            resultat += "\tmov eax, 1\n";
+            resultat += "\tjmp sortie_egal_1\n";
+            resultat += "faux_egal_1 :\n";
+            resultat += "\tmov eax, 0\n";
+            resultat += "sortie_egal_1 :\n";
             return resultat;
         }
 
@@ -200,11 +216,6 @@ public class Arbre {
             resultat += "\tmul ecx, ebx\n";
             resultat += "\tsub eax, ecx\n";
             return resultat;
-        }
-
-        // gère les not
-        else if (this.type == NOT) {
-
         }
 
         return resultat;
