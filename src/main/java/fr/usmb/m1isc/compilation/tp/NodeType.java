@@ -10,6 +10,8 @@ public enum NodeType {
     EGAL,
     GT,
     GTE,
+    LT,
+    LTE,
     MOINS_UNAIRE,
     OUTPUT,
     INPUT,
