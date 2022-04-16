@@ -63,12 +63,6 @@ public class Arbre {
     public String genCode() {
 
         String resultat = "";
-        /*if (!isNull(this.fg)) {
-            resultat += this.fg.genCode();
-        }
-        if (!isNull(this.fd)) {
-            resultat += this.fd.genCode();
-        }*/
 
         // gère les points virgules
         if (this.type == SEMI) {
@@ -160,6 +154,7 @@ public class Arbre {
             resultat += "faux_gt_1 :\n";
             resultat += "\tmov eax, 0\n";
             resultat += "sortie_gt_1 :\n";
+            return resultat;
         }
 
         // gère les strictements supérieurs
@@ -175,6 +170,7 @@ public class Arbre {
             resultat += "faux_gt_1 :\n";
             resultat += "\tmov eax, 0\n";
             resultat += "sortie_gt_1 :\n";
+            return resultat;
         }
 
         // gère les supérieurs ou égal
@@ -190,6 +186,7 @@ public class Arbre {
             resultat += "faux_gt_1 :\n";
             resultat += "\tmov eax, 0\n";
             resultat += "sortie_gt_1 :\n";
+            return resultat;
         }
 
         // gère les modulos
@@ -203,6 +200,11 @@ public class Arbre {
             resultat += "\tmul ecx, ebx\n";
             resultat += "\tsub eax, ecx\n";
             return resultat;
+        }
+
+        // gère les not
+        else if (this.type == NOT) {
+
         }
 
         return resultat;
