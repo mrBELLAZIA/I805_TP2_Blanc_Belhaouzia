@@ -85,6 +85,7 @@ public class Arbre {
             }
         } else if (this.type == LET) {
             resultat += "\tmov "+this.fg.racine+",eax \n";
+            resultat += "\tmov eax, "+this.fg.racine+" \n";
         }
         return resultat;
     }
