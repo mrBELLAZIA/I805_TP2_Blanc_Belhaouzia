@@ -76,12 +76,14 @@ public class Arbre {
             } else if (this.racine.equals("-")) {
                 resultat += "\tpop ebx\n";
                 resultat += "\tsub ebx, eax\n";
+                resultat += "\tmov eax, ebx\n";
             } else if (this.racine.equals("*")) {
                 resultat += "\tpop ebx\n";
                 resultat += "\tmul eax, ebx\n";
             } else if (this.racine.equals("/")) {
                 resultat += "\tpop ebx\n";
                 resultat += "\tdiv ebx, eax\n";
+                resultat += "\tmov eax, ebx\n";
             }
         } else if (this.type == LET) {
             resultat += "\tmov "+this.fg.racine+",eax \n";
