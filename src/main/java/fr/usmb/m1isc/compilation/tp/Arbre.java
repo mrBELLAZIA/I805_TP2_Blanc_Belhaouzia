@@ -86,8 +86,18 @@ public class Arbre {
                 resultat += "\tmov eax, ebx\n";
             }
         } else if (this.type == LET) {
-            resultat += "\tmov "+this.fg.racine+",eax \n";
-            resultat += "\tmov eax, "+this.fg.racine+" \n";
+            resultat += "\tmov "+this.fg.racine+",eax\n";
+            resultat += "\tmov eax, "+this.fg.racine+"\n";
+        } else if(this.type == WHILE){
+            resultat += "debut_while_1:\n";
+            resultat += "faux_gt_1:\n";
+            resultat += "sortie_gt_1:\n";
+            resultat += "sortie_while_1:\n";
+        } else if (this.type == INPUT) {
+            resultat += "\tin eax\n";
+        } else if(this.type == OUTPUT) {
+            resultat += "\tmov eax, "+this.racine+"\n";
+            resultat += "\tout eax\n";
         }
         return resultat;
     }
