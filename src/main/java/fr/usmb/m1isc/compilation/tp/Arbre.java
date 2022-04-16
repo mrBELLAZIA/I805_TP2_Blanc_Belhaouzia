@@ -46,6 +46,7 @@ public class Arbre {
         return resultat;
     }
 
+    // génère la partie data
     public void genData(ArrayList<String> listData) {
         if (!isNull(this.fg)) {
             this.fg.genData(listData);
@@ -58,7 +59,9 @@ public class Arbre {
         }
     }
 
+    // génère la partie code
     public String genCode() {
+
         String resultat = "";
         if (!isNull(this.fg)) {
             resultat += this.fg.genCode();
@@ -66,10 +69,15 @@ public class Arbre {
         if (!isNull(this.fd)) {
             resultat += this.fd.genCode();
         }
+
+        // gère les entiers
         if (this.type == ENTIER) {
             resultat += "\tpush eax\n";
             resultat += "\tmov eax, " + this.racine + "\n";
-        } else if (this.type == OPERATEUR) {
+        }
+
+        // gère les opérateurs (+, -, *, /)
+        else if (this.type == OPERATEUR) {
             if (this.racine.equals("+")) {
                 resultat += "\tpop ebx\n";
                 resultat += "\tadd eax, ebx\n";
@@ -85,23 +93,39 @@ public class Arbre {
                 resultat += "\tdiv ebx, eax\n";
                 resultat += "\tmov eax, ebx\n";
             }
-        } else if (this.type == LET) {
+        }
+
+        // gère les let
+        else if (this.type == LET) {
             resultat += "\tmov "+this.fg.racine+",eax\n";
             resultat += "\tmov eax, "+this.fg.racine+"\n";
-        } else if(this.type == WHILE){
+        }
+
+        // gère les while
+        else if(this.type == WHILE){
             resultat += "debut_while_1:\n";
             resultat += "faux_gt_1:\n";
             resultat += "sortie_gt_1:\n";
             resultat += "sortie_while_1:\n";
-        } else if (this.type == INPUT) {
+        }
+
+        // gère les input
+        else if (this.type == INPUT) {
             resultat += "\tin eax\n";
-        } else if(this.type == OUTPUT) {
+        }
+
+        // gère les output
+        else if(this.type == OUTPUT) {
             resultat += "\tmov eax, "+this.racine+"\n";
             resultat += "\tout eax\n";
         }
+
+        // 
+
         return resultat;
     }
 
+    // fonction principale
     public String generation() {
         String resultat = "DATA SEGMENT\n";
         ArrayList<String> listData = new ArrayList<>();
