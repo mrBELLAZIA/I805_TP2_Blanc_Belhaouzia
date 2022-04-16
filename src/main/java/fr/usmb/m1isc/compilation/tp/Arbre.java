@@ -147,6 +147,51 @@ public class Arbre {
             return resultat;
         }
 
+        // gère les inférieurs ou égal
+        else if (this.type == LTE) {
+            resultat += this.fg.genCode();
+            resultat += "\tpush eax\n";
+            resultat += this.fd.genCode();
+            resultat += "\tpop ebx\n";
+            resultat += "\tsub eax, ebx\n";
+            resultat += "\tjl faux_gt_1\n";
+            resultat += "\tmov eax, 1\n";
+            resultat += "\tjmp sortie_gt_1\n";
+            resultat += "faux_gt_1 :\n";
+            resultat += "\tmov eax, 0\n";
+            resultat += "sortie_gt_1 :\n";
+        }
+
+        // gère les strictements supérieurs
+        else if (this.type == GT) {
+            resultat += this.fg.genCode();
+            resultat += "\tpush eax\n";
+            resultat += this.fd.genCode();
+            resultat += "\tpop ebx\n";
+            resultat += "\tsub eax, ebx\n";
+            resultat += "\tjge faux_gt_1\n";
+            resultat += "\tmov eax, 1\n";
+            resultat += "\tjmp sortie_gt_1\n";
+            resultat += "faux_gt_1 :\n";
+            resultat += "\tmov eax, 0\n";
+            resultat += "sortie_gt_1 :\n";
+        }
+
+        // gère les supérieurs ou égal
+        else if (this.type == GTE) {
+            resultat += this.fg.genCode();
+            resultat += "\tpush eax\n";
+            resultat += this.fd.genCode();
+            resultat += "\tpop ebx\n";
+            resultat += "\tsub eax, ebx\n";
+            resultat += "\tjg faux_gt_1\n";
+            resultat += "\tmov eax, 1\n";
+            resultat += "\tjmp sortie_gt_1\n";
+            resultat += "faux_gt_1 :\n";
+            resultat += "\tmov eax, 0\n";
+            resultat += "sortie_gt_1 :\n";
+        }
+
         // gère les modulos
         else if (this.type == MOD) {
             resultat += this.fd.genCode();
