@@ -67,6 +67,7 @@ public class Arbre {
             resultat += this.fd.genCode();
         }
         if (this.type == ENTIER) {
+            resultat += "\tpush eax\n";
             resultat += "\tmov eax, " + this.racine + "\n";
         } else if (this.type == OPERATEUR) {
             if (this.racine.equals("+")) {
