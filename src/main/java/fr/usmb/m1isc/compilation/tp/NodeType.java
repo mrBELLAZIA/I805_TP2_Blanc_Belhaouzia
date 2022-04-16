@@ -20,5 +20,6 @@ public enum NodeType {
     WHILE,
     IF,
     THEN,
-    LET
+    LET,
+    SEMI
 }

@@ -29,7 +29,7 @@ public class Arbre {
 
     public String toString() {
         String resultat = "";
-        if ((this.type == OPERATEUR) || (this.type == LET)) {
+        if ((this.type == OPERATEUR)||(this.type == LET)||(this.type == SEMI)) {
             resultat += "("+this.racine;
         } else {
             resultat += " "+this.racine;
@@ -63,67 +63,79 @@ public class Arbre {
     public String genCode() {
 
         String resultat = "";
-        if (!isNull(this.fg)) {
+        /*if (!isNull(this.fg)) {
             resultat += this.fg.genCode();
         }
         if (!isNull(this.fd)) {
             resultat += this.fd.genCode();
+        }*/
+
+        // gère les points virgules
+        if (this.type == SEMI) {
+            return this.fg.genCode() + this.fd.genCode();
         }
 
         // gère les entiers
-        if (this.type == ENTIER) {
-            resultat += "\tpush eax\n";
-            resultat += "\tmov eax, "+this.racine+"\n";
+        else if ((this.type == ENTIER)||(this.type == IDENT)) {
+            //resultat += "\tpush eax\n";
+            return "\tmov eax, "+this.racine+"\n";
         }
 
         // gère les opérateurs (+, -, *, /)
         else if (this.type == OPERATEUR) {
+            resultat += this.fg.genCode();
+            resultat += "\tpush eax\n";
+            resultat += this.fd.genCode();
+            resultat += "\tpop ebx\n";
             if (this.racine.equals("+")) {
-                resultat += "\tpop ebx\n";
                 resultat += "\tadd eax, ebx\n";
             } else if (this.racine.equals("-")) {
-                resultat += "\tpop ebx\n";
                 resultat += "\tsub ebx, eax\n";
                 resultat += "\tmov eax, ebx\n";
             } else if (this.racine.equals("*")) {
-                resultat += "\tpop ebx\n";
                 resultat += "\tmul eax, ebx\n";
             } else if (this.racine.equals("/")) {
-                resultat += "\tpop ebx\n";
                 resultat += "\tdiv ebx, eax\n";
                 resultat += "\tmov eax, ebx\n";
             }
+            return resultat;
         }
 
         // gère les let
         else if (this.type == LET) {
-            resultat += "\tmov "+this.fg.racine+",eax\n";
-            resultat += "\tmov eax, "+this.fg.racine+"\n";
+            resultat += this.fd.genCode();
+            resultat += "\tmov "+this.fg.racine+", eax\n";
+            return resultat;
         }
 
         // gère les while
         else if(this.type == WHILE){
             resultat += "debut_while_1:\n";
-
+            resultat += this.fg.genCode();
+            resultat += "\tjz sortie_while_1\n";
+            resultat += this.fd.genCode();
+            resultat += "\tjmp debut_while_1\n";
             resultat += "sortie_while_1:\n";
+            return resultat;
         }
 
         // gère les input
         else if (this.type == INPUT) {
-            resultat += "\tin eax\n";
+            return"\tin eax\n";
         }
 
         // gère les output
         else if(this.type == OUTPUT) {
             resultat += "\tmov eax, "+this.racine+"\n";
             resultat += "\tout eax\n";
+            return resultat;
         }
 
         // gère les strictement inférieurs
-        else if (this.type == GT) {
-            resultat += "\tmov eax,"+this.fg.racine+"\n";
+        else if (this.type == LT) {
+            resultat += this.fg.genCode();
             resultat += "\tpush eax\n";
-            resultat += "\tmov eax, "+this.fd.racine +"\n";
+            resultat += this.fd.genCode();
             resultat += "\tpop ebx\n";
             resultat += "\tsub eax, ebx\n";
             resultat += "\tjle faux_gt_1\n";
@@ -132,18 +144,20 @@ public class Arbre {
             resultat += "faux_gt_1 :\n";
             resultat += "\tmov eax, 0\n";
             resultat += "sortie_gt_1 :\n";
+            return resultat;
         }
 
         // gère les modulos
         else if (this.type == MOD) {
-            resultat += "\tmov eax,"+this.fd.racine+"\n";
+            resultat += this.fd.genCode();
             resultat += "\tpush eax\n";
-            resultat += "\tmov eax, "+this.fg.racine +"\n";
+            resultat += this.fg.genCode();
             resultat += "\tpop ebx\n";
             resultat += "\tmov ecx, eax\n";
             resultat += "\tdiv ecx, ebx\n";
             resultat += "\tmul ecx, ebx\n";
-            resultat += "\tsub eax, ecx\t";
+            resultat += "\tsub eax, ecx\n";
+            return resultat;
         }
 
         return resultat;
