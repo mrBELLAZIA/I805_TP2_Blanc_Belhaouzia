@@ -134,7 +134,7 @@ public class Arbre {
             resultat += "sortie_gt_1 :\n";
         }
 
-        // gère les modulo
+        // gère les modulos
         else if (this.type == MOD) {
             resultat += "\tmov eax,"+this.fd.racine+"\n";
             resultat += "\tpush eax\n";
