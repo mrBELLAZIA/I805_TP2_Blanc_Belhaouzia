@@ -224,6 +224,17 @@ public class Arbre {
             return resultat;
         }
 
+        else if(this.type == IF) {
+            resultat += this.fg.genCode();
+            resultat += "\tjz faux_if_1\n";
+            resultat += this.fd.fg.genCode();
+            resultat += "\tjmp sortie_if_1\n";
+            resultat += "faux_if_1 :\n";
+            resultat += this.fd.fd.genCode();
+            resultat += "sortie_if_1 :\n";
+            return resultat;
+        }
+
         return resultat;
     }
 
