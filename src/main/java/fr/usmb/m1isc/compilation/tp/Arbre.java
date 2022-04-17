@@ -218,6 +218,12 @@ public class Arbre {
             return resultat;
         }
 
+        else if(this.type == MOINS_UNAIRE) {
+            resultat += this.fg.genCode();
+            resultat += "\tmul eax, -1\n";
+            return resultat;
+        }
+
         return resultat;
     }
 
