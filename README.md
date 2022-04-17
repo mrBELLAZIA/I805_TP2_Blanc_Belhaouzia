@@ -3,16 +3,16 @@
 # TP Compilation : Génération d'arbres abstraits
 
 Les points qui ont été abordés et qui sont fonctionnels sont les suivants :
-[x] la gestion des points virgules
-[x] la gestion des entiers et des identificateur
-[x] la gestion des opérateurs (+, -, *, /)
-[x] la gestion des let
-[x] la gestion des while et des if
-[x] la gestion des input et des output
-[x] la gestion des opérateurs de comparaison (<, <=, >, >=, =)
-[x] la gestion des modulo
-[x] la gestion des moins unaires
-[x] la gestion des opérateurs binaires (and, or, not)
+- [ x ] la gestion des points virgules
+- [ x ] la gestion des entiers et des identificateur
+- [ x ] la gestion des opérateurs (+, -, *, /)
+- [ x ] la gestion des let
+- [ x ] la gestion des while et des if
+- [ x ] la gestion des input et des output
+- [ x ] la gestion des opérateurs de comparaison (<, <=, >, >=, =)
+- [ x ] la gestion des modulo
+- [ x ] la gestion des moins unaires
+- [ x ] la gestion des opérateurs binaires (and, or, not)
 
 Il est cependant impossible d'utiliser plusieurs fois un while, un if, etc dans la même expression.
 
