@@ -2,74 +2,48 @@
 
 # TP Compilation : Génération d'arbres abstraits
 
-L'objectif du TP est d'utiliser les outils JFlex et CUP pour générer des arbres abstraits correspondant à un sous ensemble du langage **λ-ada**.
+Les points qui ont été abordés et qui sont fonctionnels sont les suivants :
+- la gestion des points virgules
+- la gestion des entiers et des identificateur
+- la gestion des opérateurs (+, -, *, /)
+- la gestion des let
+- la gestion des while et des if
+- la gestion des input et des output
+- la gestion des opérateurs de comparaison (<, <=, >, >=, =)
+- la gestion des modulo
+- la gestion des moins unaires
+- la gestion des opérateurs binaires (and, or, not)
 
-## Exercice 1 :
+Il est cependant impossible d'utiliser plusieurs fois un while, un if, etc dans la même expression.
 
-Utiliser JFlex et CUP pour générer l'arbre abstrait correspondant à l'analyse d'expressions arithmétiques sur les nombres entiers.
+Fonctions pour tester les operateurs :
 
-Exemple de fichier source pour l'analyseur :
-
+- pour tester le LT,IF:
 ```
-12 + 5;             /* ceci est un commentaire */
-10 / 2 - 3;  99;    /* le point-virgule sépare les expressions à évaluer */
-/* l'évaluation donne toujours un nombre entier */
-((30 * 1) + 4) mod 2; /* opérateurs binaires */
-3 * -4;             /* attention à l'opérateur unaire */
-
-let prixHt = 200;   /* une variable prend valeur lors de sa déclaration */
-let prixTtc =  prixHt * 119 / 100;
-prixTtc + 100.
+  let a = input;
+  let b = input;
+  if (a<b) then (output a) else (output b).
 ```
-
-L'expression
-
+- pour tester le GT,AND,GTE:
 ```
-let prixTtc =  prixHt * 119 / 100;
-prixTtc + 100
+  let a = input;
+  let b = input;
+  let c = input;
+  if ((a>b) and (b>=c)) then (output a) else (output c).
 ```
-pourra donner, par exemple, l'arbre suivant :
-
-![exemple arbre abtrait](arbre.png "arbre abstrait")
-
-Une fois l'arbre généré, récupérez le dans le programme pricipal et affichez le, par exemple sous la forme d'une expression préfixée parenthésée :
-`(; (LET prixTtc (/ (* prixHt 119) 100)) (+ prixTtc 100))`
-
-## Exercice 2 :
-
-Compléter la grammaire précédente en y ajoutant les opérateurs booléens, ceux de comparaison, la boucle et la conditionnelle, afin d'obtenir un sous-ensemble du langage **λ-ada** un peu plus complet.
-
-Grammaire abstraite du sous-ensemble de λ-ada correspondant :
-
-```
-expression → expression ';' expression  
-expression → LET IDENT '=' expression
-expression → IF expression THEN expression ELSE expression
-expression → WHILE expression DO expression
-expression → '-' expression
-expression → expression '+' expression
-expression → expression '-' expression
-expression → expression '*' expression
-expression → expression '/' expression
-expression → expression MOD expression
-expression → expression '<' expression
-expression → expression '<=' expression
-expression → expression '=' expression
-expression → expression AND expression
-expression → expression OR expression
-expression → NOT expression 
-expression → OUTPUT expression 
-expression → INPUT | NIL | IDENT | ENTIER
-```
-
-Le langage obtenu est tout de suite un peu plus intéressant et permet de programmer plus de choses.
-
-Exemple de programme possible pour le sous-ensemble de λ-ada considéré ici : calcul de PGCD.
-
+- pour tester le NOT,OR,LTE:
+ ```
+  let a = input;
+  let b = input;
+  let c = input;
+  if (not(a>b) and (b<=c)) then (output a) else (output c).
+ ```
+- pour tester le WHILE:
 ```
 let a = input;
 let b = input;
 while (0 < b)
 do (let aux=(a mod b); let a=b; let b=aux );
-output a .
+output a.
 ```
+
