@@ -218,12 +218,14 @@ public class Arbre {
             return resultat;
         }
 
+        // gère les moins unaires
         else if(this.type == MOINS_UNAIRE) {
             resultat += this.fg.genCode();
             resultat += "\tmul eax, -1\n";
             return resultat;
         }
 
+        // gère les if
         else if(this.type == IF) {
             resultat += this.fg.genCode();
             resultat += "\tjz faux_if_1\n";
@@ -232,6 +234,23 @@ public class Arbre {
             resultat += "faux_if_1 :\n";
             resultat += this.fd.fd.genCode();
             resultat += "sortie_if_1 :\n";
+            return resultat;
+        }
+
+        // gère les and
+        else if (this.type == AND) {
+            resultat += this.fg.genCode();
+            resultat += "\tjz faux_and_1\n";
+            resultat += this.fd.genCode();
+            resultat += "faux_and_1 :\n";
+            return resultat;
+        }
+
+        else if(this.type == OR) {
+            resultat += this.fg.genCode();
+            resultat += "\tjz fa_and_1\n";
+            resultat += this.fd.genCode();
+            resultat += "faux_and_1 :\n";
             return resultat;
         }
 
